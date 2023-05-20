@@ -93,16 +93,19 @@ function stopKeyboard(): void {
 }
 
 onUnmounted(() => {
-  window.removeEventListener('keyup', keyPress)
+  window.removeEventListener('keyup', keyUp)
 })
 
-function addWord() {
+function newGame() {
   overlay.value = true
-  Axios.post('word/AddWordFromBody', {
-    text: 'strin',
-    isCommon: true,
-    isUsed: false
-  })
+  let apiPath = 'word'
+  if (route.path == '/wordoftheday') {
+    apiPath = `word/wordoftheday?offsetInHours=${new Date().getTimezoneOffset() / -60}`
+    if (route.query.date) {
+      apiPath += `&date=${route.query.date}`
+    }
+  }
+  Axios.get(apiPath)
     .then((response) => {
       overlay.value = false
       console.log(response.data)

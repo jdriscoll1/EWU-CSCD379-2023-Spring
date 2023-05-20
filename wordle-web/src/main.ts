@@ -36,10 +36,11 @@ const vuetify = createVuetify({
         colors: {
           correct: '#4CAF50',
           misplaced: '#FFC107',
-          wrong: '#F44336'
+          wrong: '#F44336',
+          unknown: '#222222'
         }
       },
-      inverse: {
+      light: {
         colors: {
           correct: '#4CAF50',
           misplaced: '#FFC107',

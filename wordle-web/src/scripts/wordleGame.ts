@@ -2,6 +2,7 @@ import { Word } from '@/scripts/word'
 import { WordsService } from './wordsService'
 import type { Letter } from './letter'
 import Axios from 'axios'
+import { WordleSolver } from './wordleSolver'
 
 export enum WordleGameStatus {
   Active = 0,
@@ -13,6 +14,7 @@ export class WordleGame {
   constructor(secretWord?: string, numberOfGuesses: number = 6) {
     if (!secretWord) secretWord = WordsService.getRandomWord()
     this.numberOfGuesses = numberOfGuesses
+    this.solver = new WordleSolver(this)
     this.restartGame(secretWord)
     this.count = 0
   }
@@ -21,7 +23,6 @@ export class WordleGame {
   secretWord = ''
   list = WordsService.getWordList()
   status = WordleGameStatus.Active
-  guess!: Word
   numberOfGuesses = 6
   count: number
   counter: any
@@ -39,21 +40,24 @@ export class WordleGame {
 
   async restartGame(secretWord: string, numberOfGuesses: number = 6) {
     this.secretWord = secretWord
+    this.startTime = Date.now()
+    this.endTime = null
     this.guesses.splice(0)
 
     for (let i = 0; i < numberOfGuesses; i++) {
       const word = new Word()
       this.guesses.push(word)
     }
-    this.guess = this.guesses[0]
+    this.guessIndex = 0
+    this.guessedLetters.splice(0)
     this.status = WordleGameStatus.Active
+    this.solver.calculate()
   }
 
   submitGuess(time: any): boolean {
     let gameOver: boolean = false
     // put logic to win here.
-    this.guess.check(this.secretWord)
-
+    const correctGuess = this.guess.check(this.secretWord)
     // Update the guessed letters
     for (const letter of this.guess.letters) {
       this.guessedLetters.push(letter)
