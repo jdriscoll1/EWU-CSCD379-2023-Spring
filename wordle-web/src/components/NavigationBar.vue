@@ -13,12 +13,6 @@
         </template>
         <v-spacer></v-spacer>
 
-        <v-card>
-          <router-link to="/leaderBoard"><v-btn>Link To leaderBoard</v-btn></router-link>
-        </v-card>
-        <!--
-        <LoginDialog />
-        -->
         <v-btn>
           <SettingsDialogVue />
         </v-btn>
@@ -30,14 +24,21 @@
             </template>
 
             <v-list>
-              <router-link to="/about"
-                ><v-list-item-title>Link To About Page</v-list-item-title></router-link
-              >
-              <router-link to="/wordle"
-                ><v-list-item-title>Link To Wordle Game</v-list-item-title></router-link
+              <router-link to="/wordle"><v-list-item-title>Play</v-list-item-title></router-link>
+              <router-link to="/wordoftheday"
+                ><v-list-item-title>Wordle of Day</v-list-item-title></router-link
               >
               <router-link to="/leaderBoard"
-                ><v-list-item-title>Link To LeaderBoard</v-list-item-title></router-link
+                ><v-list-item-title>Leader Board</v-list-item-title></router-link
+              >
+              <router-link to="/days"
+                ><v-list-item-title>Last Ten Days</v-list-item-title></router-link
+              >
+              <router-link to="/about"
+                ><v-list-item-title>About Page</v-list-item-title></router-link
+              >
+              <router-link to="/description"
+                ><v-list-item-title>How To Play</v-list-item-title></router-link
               >
             </v-list>
           </v-menu>
@@ -50,5 +51,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import SettingsDialogVue from './SettingsDialog.vue'
-import LoginDialog from './LoginDialog.vue'
+
+import { useRoute } from 'vue-router'
 </script>
