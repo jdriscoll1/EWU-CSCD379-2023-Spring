@@ -9,6 +9,12 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
 import NavigationBar from './components/NavigationBar.vue'
+import { Services } from './scripts/services'
+import { SignInService } from './scripts/signInService'
+import { reactive, provide } from 'vue'
+
+const signInService = reactive(new SignInService())
+provide(Services.SignInService, signInService)
 </script>
 
 <style scoped>

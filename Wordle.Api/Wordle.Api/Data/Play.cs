@@ -11,7 +11,7 @@ namespace Wordle.Api.Data
     {
         public Guid PlayId { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public AppUser User { get; set; } = null!;
         public int WordId { get; set; }
         public Word Word { get; set; } = null!;
         public int Attempts { get; set; }
@@ -32,11 +32,6 @@ namespace Wordle.Api.Data
                 for (int i = 30; i > -10; i--) { 
                     wordOptions.Add(DateToWord(DateTime.Now.AddDays(i), words));
                 }
-
-
-               
-
-
 
                 Random r = new(); 
                 
@@ -59,7 +54,7 @@ namespace Wordle.Api.Data
             }
         }
 
-        public static User StringToUser(string name, AppDbContext db)
+        public static AppUser StringToUser(string name, AppDbContext db)
         {
             return db.Users.Where((u) => u.Name.Equals(name)).First();
         }

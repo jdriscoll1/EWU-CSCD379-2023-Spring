@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.Api.Data;
 using Wordle.Api.Dtos;
@@ -47,9 +48,31 @@ namespace Wordle.Api.Controllers
         }
 
         [HttpPost("AddWordFromBody")]
+        [Authorize(Policy = "NewPolicy")]
         public async Task<Word> AddWordFromBody([FromBody] WordDto word)
         {
             return await _wordService.AddWord(word.Text, word.IsCommon);
         }
+
+        [HttpPost("DropWord")]
+        [Authorize(Policy = "NewPolicy")]
+        public async Task<bool> DropWord(string word) {
+            return await _wordService.DropWord(word); 
+        
+        }
+
+        [HttpPost("FlipIsCommon")]
+        [Authorize]
+        public async Task<bool> FlipIsCommon(string word)
+        {
+            return await _wordService.FlipIsCommon(word);
+
+        }
+
+        [HttpGet("GetPageOfWords")]
+        public async Task<string> GetPageOfWords(int page, string filter = "") {
+            return await _wordService.GetPageOfWords(page, filter); 
+        }
+
     }
 }    

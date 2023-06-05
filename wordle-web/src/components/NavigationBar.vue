@@ -13,6 +13,8 @@
         </template>
         <v-spacer></v-spacer>
 
+        <router-link to="/signIn">{{ signInService.token.userName }}</router-link>
+
         <v-btn>
           <SettingsDialogVue />
         </v-btn>
@@ -40,6 +42,10 @@
               <router-link to="/description"
                 ><v-list-item-title>How To Play</v-list-item-title></router-link
               >
+              <router-link to="/index"
+                ><v-list-item-title>Dictionary</v-list-item-title></router-link
+              >
+              <router-link to="/signIn"><v-list-item-title>sign In</v-list-item-title></router-link>
             </v-list>
           </v-menu>
         </template>
@@ -53,4 +59,18 @@ import { RouterLink } from 'vue-router'
 import SettingsDialogVue from './SettingsDialog.vue'
 
 import { useRoute } from 'vue-router'
+import { Services } from '@/scripts/services'
+import type { SignInService } from '@/scripts/signInService'
+import { inject, watch } from 'vue'
+
+//---sign in
+const signInService = inject(Services.SignInService) as SignInService
+
+watch(
+  () => signInService.token,
+  (value) => {
+    console.log(`Signed in user: ${value.userName}`)
+  }
+)
+//--------
 </script>
