@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import WordleView from '../views/WordleView.vue'
-import DescriptionView from '../views/DescriptionView.vue'
 import WordDay from '@/views/WordDay.vue'
 import IndexView from '../views/IndexView.vue'
 
@@ -19,9 +18,14 @@ const router = createRouter({
       component: WordleView
     },
     {
-      path: '/description',
-      name: 'description',
-      component: DescriptionView
+      path: '/test',
+      name: 'test',
+      component: () => import('../views/GameView.vue')
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: () => import('../views/MainView.vue')
     },
     {
       path: '/about',
