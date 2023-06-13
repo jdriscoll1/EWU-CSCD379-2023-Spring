@@ -68,6 +68,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddScoped<WordService>();
 builder.Services.AddScoped<PlayService>();
+builder.Services.AddScoped<GameService>();
 
 //Identity Services
 builder.Services.AddIdentityCore<AppUser>(options => options.SignIn.RequireConfirmedAccount = false)
