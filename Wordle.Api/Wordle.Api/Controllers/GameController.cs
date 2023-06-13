@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.Api.Services;
+using Wordle.Api.Dtos;
 
 namespace Wordle.Api.Controllers
 {
@@ -20,10 +21,10 @@ namespace Wordle.Api.Controllers
         {
             return await _gameService.StartGame();
         }
-        [HttpGet("AcceptInput")]
-        public async Task<string> AcceptInput()
+        [HttpPost("AcceptInput")]
+        public async Task<string> AcceptInput(DataDto data)
         {
-            return await _gameService.AcceptInput();
+            return await _gameService.AcceptInput(data);
         }
 
     }

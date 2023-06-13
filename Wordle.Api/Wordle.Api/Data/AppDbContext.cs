@@ -16,6 +16,9 @@ namespace Wordle.Api.Data
         public DbSet<Play> Plays => Set<Play>();
         public DbSet<AppUser> Users => Set<AppUser>();
 
+        public DbSet<Game> Games => Set<Game>();
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)  //needs work 
         {
             base.OnModelCreating(modelBuilder);
