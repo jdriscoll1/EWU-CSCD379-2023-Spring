@@ -87,7 +87,7 @@ function enterWord() {
     }) */
 
 function isInputValid(input: string): boolean {
-  const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+  const specialCharacters = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
   const containsSpecialChars = specialCharacters.test(input);
   
   const containsNumbers = /\d/.test(input);
