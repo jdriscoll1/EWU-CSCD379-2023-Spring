@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-var displayedWord = ref('frog')//change to axios get
+var displayedWord = ref('frog') //change to axios get
 var inputWord = ref('')
 
 const emits = defineEmits<{
@@ -32,77 +32,65 @@ const emits = defineEmits<{
   (event: 'LoseGame'): void
 }>()
 
-//---------------------random game number---------------
-function generateRandomNumber(): number {
-  const maxInt = Number.MAX_SAFE_INTEGER;
-  const randomNumber = Math.floor(Math.random() * maxInt) + 1;
-  localStorage.setItem('randomNumber', randomNumber.toString());
-  return randomNumber;
-}
-
-// Usage example:
-let randomNumber: number;
-
-const storedRandomNumber = localStorage.getItem('randomNumber');
-
-if (storedRandomNumber) {
-  randomNumber = parseInt(storedRandomNumber, 10);
-} else {
-  randomNumber = generateRandomNumber();
-}
-
-// Clear the stored random number on page refresh
-window.addEventListener('beforeunload', () => {
-  localStorage.removeItem('randomNumber');
-});
-
-
-console.log('Random Number:', randomNumber);
-//-------------------------------------------------
+/*
+  Axios.get(game/startGame)
+  .then((response) => {
+    displayedWord.value = response.data
+    
+  })
+  .catch((error) => {
+    console.log(error)
+  }) */
 
 function enterWord() {
   let tempWord = inputWord.value.toLowerCase()
   if (isInputValid(tempWord)) {
-  console.log("Input is valid!");
-  displayedWord.value = tempWord
-  //post word to api w/ locally stored randomly generated game id
-} else {
-  console.log("Invalid input. Please enter a 4-letter string without special characters or numbers.");
-  displayedWord.value = "Input must be 4 letters long, and must not have special characters or numbers."
-}
-  
-}
-/*
-  Axios.post('word/AddWordFromBody', {
-    text: 'strin',
-    isCommon: true,
-    isUsed: false
+    console.log('Input is valid!')
+    displayedWord.value = tempWord
+    //post word to api
+    /*Axios.post('game/sajkhndkjna', {
+    word: tempWord,
+    gameEnded: false,
   })
     .then((response) => {
-      overlay.value = false
+      //time out, wait a moment, overlay?
+      //overlay.value = false
       console.log(response.data)
+      if(!response.data.isEnd){
+        displayedWord.value = response.data
+      }else{
+        WinGame()
+      }
     })
     .catch((error) => {
       console.log(error)
     }) */
+  } else {
+    console.log(
+      'Invalid input. Please enter a 4-letter string without special characters or numbers.'
+    )
+    displayedWord.value =
+      'Input must be 4 letters long, and must not have special characters or numbers.'
+  }
+}
 
 function isInputValid(input: string): boolean {
-  const specialCharacters = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/;
-  const containsSpecialChars = specialCharacters.test(input);
-  
-  const containsNumbers = /\d/.test(input);
-  
-  const isFourLettersLong = input.length === 4;
+  const specialCharacters = /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]+/
+  const containsSpecialChars = specialCharacters.test(input)
 
-  return !containsSpecialChars && !containsNumbers && isFourLettersLong;
+  const containsNumbers = /\d/.test(input)
+
+  const isFourLettersLong = input.length === 4
+
+  return !containsSpecialChars && !containsNumbers && isFourLettersLong
 }
 
 function WinGame() {
-  localStorage.removeItem('randomNumber');
+  localStorage.removeItem('randomNumber')
   emits('WinGame')
 }
 function LoseGame() {
-  localStorage.removeItem('randomNumber');
+  localStorage.removeItem('randomNumber')
   emits('LoseGame')
 }
 </script>
