@@ -22,9 +22,11 @@
 </template>
 
 <script setup lang="ts">
+import Axios from 'axios'
 import { ref } from 'vue'
 
-var displayedWord = ref('frog') //change to axios get
+var displayedWord = ref('') //change to axios get
+var currGameId = -1; 
 var inputWord = ref('')
 
 const emits = defineEmits<{
@@ -32,15 +34,18 @@ const emits = defineEmits<{
   (event: 'LoseGame'): void
 }>()
 
-/*
-  Axios.get(game/startGame)
+
+  Axios.get('/api/GameController/StartGame')
   .then((response) => {
-    displayedWord.value = response.data
+    
+    displayedWord.value = response.data.Word
+    currGameId = response.data.GameId
+    console.log("Curr Game Id: " + currGameId + " First Word: " + displayedWord.value); 
     
   })
   .catch((error) => {
     console.log(error)
-  }) */
+  }) 
 
 function enterWord() {
   let tempWord = inputWord.value.toLowerCase()
@@ -48,23 +53,24 @@ function enterWord() {
     console.log('Input is valid!')
     displayedWord.value = tempWord
     //post word to api
-    /*Axios.post('game/sajkhndkjna', {
+    Axios.post('api/GameController/AcceptInput', {
     word: tempWord,
-    gameEnded: false,
+    gameId: currGameId,
   })
     .then((response) => {
       //time out, wait a moment, overlay?
       //overlay.value = false
       console.log(response.data)
-      if(!response.data.isEnd){
-        displayedWord.value = response.data
+      if(response.data.Word != "Game Over"){
+        displayedWord.value = response.data.Word
       }else{
-        WinGame()
+         WinGame()
       }
+
     })
     .catch((error) => {
       console.log(error)
-    }) */
+    }) 
   } else {
     console.log(
       'Invalid input. Please enter a 4-letter string without special characters or numbers.'
