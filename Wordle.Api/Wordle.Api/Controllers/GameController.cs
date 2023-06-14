@@ -27,5 +27,10 @@ namespace Wordle.Api.Controllers
             return await _gameService.AcceptInput(data);
         }
 
+        [HttpGet("ViewUsedWords")]
+        public string ViewUsedWords(int gameId) {
+            return _gameService.ViewUsedWords(gameId);
+        }
+
     }
 }

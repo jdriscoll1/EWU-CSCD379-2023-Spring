@@ -6,6 +6,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Security.Cryptography;
 using Wordle.Api.Data;
 using Wordle.Api.Dtos;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Wordle.Api.Services
 {
@@ -43,7 +44,7 @@ namespace Wordle.Api.Services
                       
             // We generate a random number generator
             RandomNumberGenerator.Create();
-           
+
             // We pull a random number
             int initialWordId = RandomNumberGenerator.GetInt32(2233);
 
@@ -52,6 +53,8 @@ namespace Wordle.Api.Services
             
             // We convert the random number to a string
             string CurrWord = flwg_cs.Convert_IntToWord(initialWordId, IntToWord);
+            
+            // We create a new piece of data to pass
             DataDto data = new()
             {
                 GameId = gameId,
@@ -75,6 +78,35 @@ namespace Wordle.Api.Services
 
         }
 
+        public string ViewUsedWords(int gameId) {
+            // Then we take the current game id
+
+            // Then we initialize the word set 
+            SWIGTYPE_p_WordSet WordSet = flwg_cs.init_WordSet(NumWords);
+
+            // Then we get all of the turns for a single game 
+            IQueryable<Game> currGameTurns = _db.Games.Where(turn => turn.GameNumber == gameId);
+
+            // Then we initialize the hash maps
+            flwg_cs.Initialize_HashMaps(WordToInt, IntToWord, DictionaryFilePath);
+
+            string output = ""; 
+            // Fill the Word Set
+            foreach (Game turn in currGameTurns)
+            {
+                int w = flwg_cs.Convert_WordToInt(turn.word, WordToInt);
+                flwg_cs.markUsed_WordSet(w, WordSet);
+                output += turn.word + " " + w + " " + flwg_cs.checkIfUsed_WordSet(w, WordSet);
+
+
+            }
+            return output; 
+
+
+
+
+        }
+
         public async Task<string> AcceptInput(DataDto data) {
             
             // First we take the user input  
@@ -89,15 +121,18 @@ namespace Wordle.Api.Services
             // Then we get all of the turns for a single game 
             IQueryable<Game> currGameTurns = _db.Games.Where(turn => turn.GameNumber == gameId);
 
+            // Then we initialize the hash maps
+            flwg_cs.Initialize_HashMaps(WordToInt, IntToWord, DictionaryFilePath);
+
             // Fill the Word Set
             foreach (Game turn in currGameTurns)
             {
                 int w = flwg_cs.Convert_WordToInt(turn.word, WordToInt);
                 flwg_cs.markUsed_WordSet(w, WordSet);
             }
+            
 
-            // Then we initialize the hash maps
-            flwg_cs.Initialize_HashMaps(WordToInt, IntToWord, DictionaryFilePath);
+            
 
             
             
@@ -205,7 +240,7 @@ namespace Wordle.Api.Services
 
 
 
-            if (flwg_cs.checkIfUsed_WordSet(wordID, WordSet) == 1)
+            if (flwg_cs.checkIfUsed_WordSet(wordID, WordSet) != 0)
             {
                 return "Word Already Used";
            
