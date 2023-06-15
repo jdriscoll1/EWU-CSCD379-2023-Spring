@@ -18,7 +18,7 @@
                 >-----{{ gameResult }}--------</v-toolbar
               >
               <v-col>
-                <router-link to="/main">
+                <router-link to="/">
                   <v-btn variant="text" @click="dialog = false">Home</v-btn>
                 </router-link>
               </v-col>

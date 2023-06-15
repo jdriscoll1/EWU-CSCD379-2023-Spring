@@ -1,32 +1,28 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container>
-        <v-card>
-          <v-card-title>
-            <h1>Game!</h1>
-          </v-card-title>
-          <v-card-text>
-            <header class="text-center">{{ displayedWord }}</header>
-            <p>_</p>
-            <v-text-field v-model="inputWord" label="Enter Word"></v-text-field>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn color="primary" @click="enterWord">Enter</v-btn>
-            <v-btn color="error" @click="LoseGame()">Resign</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-container>
-    </v-main>
-  </v-app>
+  <v-container>
+    <v-card>
+      <v-card-title>
+        <h1>Game!</h1>
+      </v-card-title>
+      <v-card-text>
+        <header class="text-center">{{ displayedWord }}</header>
+        <p>_</p>
+        <v-text-field v-model="inputWord" label="Enter Word"></v-text-field>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" @click="enterWord">Enter</v-btn>
+        <v-btn color="error" @click="LoseGame()">Resign</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-container>
 </template>
 
 <script setup lang="ts">
 import Axios from 'axios'
 import { ref } from 'vue'
 
-var displayedWord = ref('') //change to axios get
-var currGameId = -1; 
+var displayedWord = ref('')
+var currGameId = -1
 var inputWord = ref('')
 
 const emits = defineEmits<{
@@ -34,18 +30,15 @@ const emits = defineEmits<{
   (event: 'LoseGame'): void
 }>()
 
-
-  Axios.get('/api/GameController/StartGame')
+Axios.get('/api/GameController/StartGame')
   .then((response) => {
-    
     displayedWord.value = response.data.Word
     currGameId = response.data.GameId
-    console.log("Curr Game Id: " + currGameId + " First Word: " + displayedWord.value); 
-    
+    console.log('Curr Game Id: ' + currGameId + ' First Word: ' + displayedWord.value)
   })
   .catch((error) => {
     console.log(error)
-  }) 
+  })
 
 function enterWord() {
   let tempWord = inputWord.value.toLowerCase()
@@ -54,23 +47,22 @@ function enterWord() {
     displayedWord.value = tempWord
     //post word to api
     Axios.post('api/GameController/AcceptInput', {
-    word: tempWord,
-    gameId: currGameId,
-  })
-    .then((response) => {
-      //time out, wait a moment, overlay?
-      //overlay.value = false
-      console.log(response.data)
-      if(response.data.Word != "Game Over"){
-        displayedWord.value = response.data.Word
-      }else{
-         WinGame()
-      }
-
+      word: tempWord,
+      gameId: currGameId
     })
-    .catch((error) => {
-      console.log(error)
-    }) 
+      .then((response) => {
+        //time out, wait a moment, overlay?
+        //overlay.value = false
+        console.log(response.data)
+        if (response.data.Word != 'Game Over') {
+          displayedWord.value = response.data.Word
+        } else {
+          WinGame()
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   } else {
     console.log(
       'Invalid input. Please enter a 4-letter string without special characters or numbers.'
