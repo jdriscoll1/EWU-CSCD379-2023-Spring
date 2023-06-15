@@ -8,7 +8,9 @@
             ><v-app-bar-nav-icon icon="mdi-puzzle"></v-app-bar-nav-icon
           ></router-link>
           <router-link to="/"
-            ><v-app-bar-title class="primary" color="primary">Last Word Standing</v-app-bar-title></router-link
+            ><v-app-bar-title class="primary" color="primary"
+              >Last Word Standing</v-app-bar-title
+            ></router-link
           >
         </template>
         <v-spacer></v-spacer>
@@ -25,9 +27,10 @@
 
             <v-list>
               <router-link to="/"><v-list-item-title>Main</v-list-item-title></router-link>
-              <router-link to="/game"><v-list-item-title>Single Player</v-list-item-title></router-link>
+              <router-link to="/game"
+                ><v-list-item-title>Single Player</v-list-item-title></router-link
+              >
               <router-link to="/about"><v-list-item-title>About</v-list-item-title></router-link>
-
             </v-list>
           </v-menu>
         </template>
@@ -39,5 +42,4 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
 import SettingsDialogVue from './SettingsDialog.vue'
-
 </script>

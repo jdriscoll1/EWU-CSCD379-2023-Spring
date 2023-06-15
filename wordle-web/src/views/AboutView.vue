@@ -6,9 +6,10 @@
           <div class="text-overline mb-1">Four Letter Word Game</div>
           <div class="text-h6 mb-1">About</div>
           <div class="text-caption">
-            In this game you will be competing with a computer to list the last word. You will start with a four letter word, 
-            and must come up with a new word that has not been listed yet that is one letter away from the previous word.
-            The game ends when you give up, or when the computer can't come up with a connected word.
+            In this game you will be competing with a computer to list the last word. You will start
+            with a four letter word, and must come up with a new word that has not been listed yet
+            that is one letter away from the previous word. The game ends when you give up, or when
+            the computer can't come up with a connected word.
           </div>
         </div>
       </v-card-item>
