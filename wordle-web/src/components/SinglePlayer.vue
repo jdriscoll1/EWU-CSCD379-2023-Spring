@@ -8,12 +8,16 @@
         <header class="text-center">{{ displayedWord }}</header>
         <p>_</p>
         <v-text-field v-model="inputWord" label="Enter Word"></v-text-field>
+        <header class="text-center">{{ displayedError }}</header>
+
       </v-card-text>
       <v-card-actions>
         <v-btn color="primary" @click="enterWord">Enter</v-btn>
         <v-btn color="error" @click="LoseGame()">Resign</v-btn>
       </v-card-actions>
+
     </v-card>
+
   </v-container>
 </template>
 
@@ -22,6 +26,7 @@ import Axios from 'axios'
 import { ref } from 'vue'
 
 var displayedWord = ref('')
+var displayedError = ref('')
 var currGameId = -1
 var inputWord = ref('')
 
@@ -43,8 +48,6 @@ Axios.get('/api/GameController/StartGame')
 function enterWord() {
   let tempWord = inputWord.value.toLowerCase()
   if (isInputValid(tempWord)) {
-    console.log('Input is valid!')
-    displayedWord.value = tempWord
     //post word to api
     Axios.post('api/GameController/AcceptInput', {
       word: tempWord,
@@ -54,10 +57,19 @@ function enterWord() {
         //time out, wait a moment, overlay?
         //overlay.value = false
         console.log(response.data)
-        if (response.data.Word != 'Game Over') {
+        if (response.data.GameId != -1) {
+          displayedError.value = ''; 
           displayedWord.value = response.data.Word
         } else {
-          WinGame()
+          if(response.data.Word == 'Game Over'){
+            displayedError.value = ''; 
+
+             WinGame()
+          }
+          else{
+            displayedError.value = response.data.Word; 
+
+          }
         }
       })
       .catch((error) => {
@@ -67,7 +79,7 @@ function enterWord() {
     console.log(
       'Invalid input. Please enter a 4-letter string without special characters or numbers.'
     )
-    displayedWord.value =
+    displayedError.value =
       'Input must be 4 letters long, and must not have special characters or numbers.'
   }
 }
