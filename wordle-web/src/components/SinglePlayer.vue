@@ -1,6 +1,5 @@
 <template>
-  <v-app>
-    <v-main>
+  
       <v-container>
         <v-card>
           <v-card-title>
@@ -17,15 +16,14 @@
           </v-card-actions>
         </v-card>
       </v-container>
-    </v-main>
-  </v-app>
+   
 </template>
 
 <script setup lang="ts">
 import Axios from 'axios'
 import { ref } from 'vue'
 
-var displayedWord = ref('') //change to axios get
+var displayedWord = ref('') 
 var currGameId = -1; 
 var inputWord = ref('')
 

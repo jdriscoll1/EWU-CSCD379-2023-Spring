@@ -3,13 +3,12 @@
     <v-card class="mx-auto" max-width="344" variant="outlined">
       <v-card-item>
         <div>
-          <div class="text-overline mb-1">Wordle</div>
+          <div class="text-overline mb-1">Four Letter Word Game</div>
           <div class="text-h6 mb-1">About</div>
           <div class="text-caption">
-            This is website designed to allow you to play the hit game Wordle. Wordle is a game in
-            which you are provided 6 guesses to figure out what a 5 letter word is. It will tell you
-            which letters were misplaced, which letters are incorrect and which letters are
-            correctly placeed. Wordle is a great game, but not as great as Meg is!
+            In this game you will be competing with a computer to list the last word. You will start with a four letter word, 
+            and must come up with a new word that has not been listed yet that is one letter away from the previous word.
+            The game ends when you give up, or when the computer can't come up with a connected word.
           </div>
         </div>
       </v-card-item>
